@@ -1,0 +1,49 @@
+.ui-websearch-popup {
+	padding: 5px 20px;
+	text-align: left;
+}
+.ui-websearch .ui-icon-websearch {
+	background: transparent url(../images/search.png) 20px 20px no-repeat;
+	height: 20px;
+	width: 20px;
+	margin: 0 5px 0 0;
+	padding: 0;
+	display: inline-block;
+	cursor: pointer;
+}
+.ui-websearch .ui-icon-altavista     { background-position: left top; }
+.ui-websearch .ui-icon-amazon        { background-position: right top; }
+.ui-websearch .ui-icon-ask           { background-position: left -20px; }
+.ui-websearch .ui-icon-bing          { background-position: right -20px; }
+.ui-websearch .ui-icon-dictionary    { background-position: left -40px; }
+.ui-websearch .ui-icon-dogpile       { background-position: right -40px; }
+.ui-websearch .ui-icon-duckduckgo    { background-position: left -60px; }
+.ui-websearch .ui-icon-google        { background-position: right -60px; }
+.ui-websearch .ui-icon-lycos         { background-position: left -80px; }
+.ui-websearch .ui-icon-stackoverflow { background-position: right -80px; }
+.ui-websearch .ui-icon-yahoo         { background-position: left -100px; }
+.ui-websearch .ui-icon-webcrawler    { background-position: right -100px; }
+.ui-websearch .ui-icon-wikipedia     { background-position: left bottom; }
+.ui-websearch .ui-icon-wolfram       { background-position: right bottom; }
+
+.ui-websearch .ui-button-text {
+	padding: 0 5px;
+	white-space: nowrap;
+}
+/* popup styling, trying to use ui-state-default, but hiding the background & border; add color as needed */
+.ui-websearch-popup .site {
+	font-size: 1em;
+	font-weight: normal;
+	display: block;
+	cursor: pointer;
+	text-decoration: none;
+	text-align: left;
+	background-color: transparent;
+	background-image: url();
+	border-color: transparent;
+}
+/* popup styling, hovering add ui-state-highlight */
+.ui-websearch-popup .site:hover {
+	font-weight: normal;
+
+}
