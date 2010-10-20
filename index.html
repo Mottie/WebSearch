@@ -1,23 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" type="text/css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" type="text/css" />
 
- <script src="js/websearch.js" type="text/javascript"></script>
- <link href="css/search.css" type="text/css" rel="stylesheet" />
+<script src="js/websearch.js" type="text/javascript"></script>
+<link href="css/search.css" type="text/css" rel="stylesheet" />
 
 <style type="text/css">
-body { background: #333; color: #ddd; }
-#demo { margin: 100px auto; text-align: center; }
-a:link { color: #fc0; }
+body { background: #333; color: #ddd; width: 900px; margin: 10px auto; }
+#demo { margin: 100px auto; text-align: center; clear: both; }
+#download { float: right; display: block; padding: 8px; background: #444; }
+a:link { color: #fc0; text-decoration: none; }
 a:hover { color: #fff; }
-a:visited,a:active { color: #f80; }
+a:visited,a:active { color: #f80; text-decoration: none; }
 </style>
 
 <script type="text/javascript">
 $(document).ready(function(){
 
+	// Set/Replace default search sites
+	// ********************************
+	// set/replace default  'Name' : [ 'css-class', 'search string/{s}' ]
+	// remove default       'Name' : ''
+	// ********************************
+	// 'Name' can include spaces
+	// 'css-class' should be a css class with a 20x20 pixel (ideally 16x16) background image
+	// 'search-string' is determined by searching the site, then copying the location URL, replace the query with {s}
+	//  var webSites = {
+	//   'DuckDuckGo' : ['ui-icon-duckduckgo', 'http://duckduckgo.com/?q={s}'], // Add/replace web site
+	//   'WebCrawler' : ''                                                      // Remove WebCrawler from default list
+	//  };
+	// Default web sites (marked) + additional examples 
 	var webSites = { /* 'Name' : [ 'css-class', 'search string{s}' ] */
 		'Alta Vista'    : ['ui-icon-altavista',     'http://us.yhs4.search.yahoo.com/yhs/search?fr=altavista&q={s}'],
 		'Amazon'        : ['ui-icon-amazon',        'http://www.amazon.com/s/url=search-alias%3Daps&field-keywords={s}'],
@@ -35,6 +49,7 @@ $(document).ready(function(){
 		'Yahoo'         : ['ui-icon-yahoo',         'http://search.yahoo.com/search?p={s}'] // *** This is already a default site ***
 	};
 
+	// Default options shown - for the websearch default values, see marked entries above
 	$('#web-search').websearch({
 		defaultSite   : "Google",  // Set the default search site
 		openNewWindow : true,      // if true, searches will open in a new window/tab
@@ -49,6 +64,10 @@ $(document).ready(function(){
 </script>
 
 </head><body>
+
+<a id="download" href="http://github.com/Mottie/WebSearch">Download</a>
+
+<br><br>
 
 <div id="demo">
 	<input id="web-search" type="text">

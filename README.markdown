@@ -1,7 +1,8 @@
 **Overview** ([demo][1])
 
-This code is designed to make it easy to add a web search widget to your web site. It utilizes the jQuery widget factory so that makes it dependent on jQuery and several jQuery UI components (listed below).
+This code is designed to make it easy to add a search widget to your web site.
 
+It utilizes the jQuery widget factory so that makes it dependent on jQuery and several jQuery UI components (listed below). This also makes it compatible with the jQuery UI Themeroller and all of the available themes.
 
 **Usage**
 
@@ -98,6 +99,7 @@ This code is designed to make it easy to add a web search widget to your web sit
 
 **Dependencies**
 
+* jquery
 * jquery.ui.core.js
 * jquery.ui.widget.js
 * jquery.ui.button.js
