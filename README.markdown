@@ -1,3 +1,8 @@
+**Overview** ([demo][1])
+
+This code is designed to make it easy to add a web search widget to your web site. It utilizes the jQuery widget factory so that makes it dependent on jQuery and several jQuery UI components (listed below).
+
+
 **Usage**
 
 * Html
@@ -97,3 +102,4 @@
 * jquery.ui.widget.js
 * jquery.ui.button.js
 
+ [1]: http://mottie.github.com/WebSearch/
