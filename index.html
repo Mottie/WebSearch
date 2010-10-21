@@ -3,22 +3,13 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-darkness/jquery-ui.css" type="text/css" />
+<link href="css/demo.css" type="text/css" rel="stylesheet" />
 
 <script src="js/websearch.js" type="text/javascript"></script>
 <link href="css/search.css" type="text/css" rel="stylesheet" />
 
-<style type="text/css">
-body { background: #333; color: #ddd; width: 900px; margin: 10px auto; }
-#demo { margin: 100px auto; text-align: center; clear: both; }
-#download { float: right; display: block; padding: 8px; background: #444; }
-a:link { color: #fc0; text-decoration: none; }
-a:hover { color: #fff; }
-a:visited,a:active { color: #f80; text-decoration: none; }
-</style>
-
 <script type="text/javascript">
 $(document).ready(function(){
-
 	// Set/Replace default search sites
 	// ********************************
 	// set/replace default  'Name' : [ 'css-class', 'search string/{s}' ]
@@ -51,20 +42,21 @@ $(document).ready(function(){
 
 	// Default options shown - for the websearch default values, see marked entries above
 	$('#web-search').websearch({
-		defaultSite   : "Google",  // Set the default search site
-		openNewWindow : true,      // if true, searches will open in a new window/tab
-		clicktoSearch : true,      // if true, left clicking on the icon will initiate the search & right click will open the site selector
-		clickMessage  : ['(left click to search, right click to switch)', '(press enter to search, click here to change)'], // messages added to the button title
-		tooltipClass  : 'tooltip', // class added to the button, in case tooltips are to be used (site name and above message are in the button title)
-		sortList      : true,      // if true, the site selection list will be sorted
-		hidden        : false,     // if true, the entire websearch widget will be hidden
-		websearch     : webSites   // add/replace/remove site searches; see the webSites variable above for examples.
+		defaultSite     : "Google",  // Set the default search site.
+		windowTarget    : '_blank',  // Choose from '_blank', '_parent', '_self', '_top' or '{framename}'
+		windowOptions   : '',        // Window options ("menubar=1,resizable=1,width=350,height=250", etc)
+		tooltipClass    : 'tooltip', // class added to the button, in case tooltips are to be used (site name and above message are in the button title).
+		sortList        : true,      // if true, the site selection list will be sorted.
+		hidden          : false,     // if true, the entire websearch widget will be hidden.
+		searchResult    : null,      // add a search method here in case you want to open the search page in a lightbox.
+		websearch       : webSites   // add/replace/remove site searches; see the webSites variable above for examples.
 	});
-})
+});
 </script>
 
 </head><body>
 
+<h2>WebSearch - jQuery UI Widget</h2>
 <a id="download" href="http://github.com/Mottie/WebSearch">Download</a>
 
 <br><br>

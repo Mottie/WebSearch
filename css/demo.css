@@ -1,0 +1,39 @@
+/* websearch demo */
+body {
+ background: #333;
+ color: #ddd;
+ width: 900px;
+ margin: 10px auto;
+}
+
+h2 {
+ text-align: center;
+}
+#demo {
+ margin: 100px auto; text-align: center; clear: both;
+}
+a:link {
+ color: #fc0;
+ text-decoration: none;
+}
+a:hover {
+ color: #fff;
+}
+a:visited, a:active {
+ color: #f80;
+ text-decoration: none;
+}
+
+#download {
+ float: right;
+ display: block;
+ padding: 8px;
+ background: #222;
+ border: #555 1px solid;
+ border-radius: 5px;
+ -moz-border-radius: 5px;
+ -webkit-border-radius: 5px;
+}
+#download:hover {
+ background: #444;
+}

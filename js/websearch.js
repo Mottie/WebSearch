@@ -1,5 +1,5 @@
 /*
- * WebSearch - jQuery UI Widget
+ * WebSearch - jQuery UI Widget v1.1
  *
  * Copyright 2010, Rob Garrison (aka Mottie/Fudgey)
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -11,20 +11,20 @@
  */
 (function( $, undefined ) {
 
-	// plugin global variables
-	var o, wsWrap, wsButton, wsPopup;
+// plugin global variables
+var self, o, wsWrap, wsButton, wsPopup, popupWidth, popupHeight, buttonHeight;
 
- $.widget("ui.websearch", {
+$.widget("ui.websearch", {
+
 	// default options
 	options: {
-
-		defaultSite   : "Google",  // Set the default search site
-		openNewWindow : true,      // if true, searches will open in a new window/tab
-		clicktoSearch : true,      // if true, left clicking on the icon will initiate the search & right click will open the site selector
-		clickMessage  : ['(left click to search, right click to switch)', '(press enter to search, click here to change)'], // messages added to the button title
-		tooltipClass  : 'tooltip', // class added to the button, in case tooltips are to be used (site name and above message are in the button title)
-		sortList      : true,      // if true, the site selection list will be sorted
-		hidden        : false,     // if true, the entire websearch widget will be hidden
+		defaultSite   : "Google",  // Set the default search site.
+		windowTarget  : '_blank',  // Choose from '_blank', '_parent', '_self', '_top' or '{framename}'
+		windowOptions : '',        // Window options ("menubar=1,resizable=1,width=350,height=250", etc)
+		tooltipClass  : 'tooltip', // class added to the button, in case tooltips are to be used (site name and above message are in the button title).
+		sortList      : true,      // if true, the site selection list will be sorted.
+		hidden        : false,     // if true, the entire websearch widget will be hidden.
+		searchResult  : null,      // add a search method here in case you want to open the search page in a lightbox.
 		websearch     : {          // add/replace/remove site searches; see the webSites variable above for examples.
 			// 'Site Name'  : ['css-class',          'search string{s}' ]
 			'Bing'          : ['ui-icon-bing',       'http://www.bing.com/search?q={s}'],
@@ -35,16 +35,17 @@
 			'Yahoo'         : ['ui-icon-yahoo',      'http://search.yahoo.com/search?p={s}']
 		}
 	},
+
 	_create: function() {
 		o = this.options;
-		var self = this,
-				menuClick = (o.clicktoSearch) ? 'click contextmenu' : 'click';
+		self = this;
 		this.element
 			.addClass('ui-websearch-input ui-widget-content ui-corner-left')
 			.wrap('<div class="ui-websearch ui-widget"/>')
-			.after('<button class="ui-state-default ui-corner-right ' + o.tooltipClass + '"><span class="ui-icon ui-icon-websearch"></span></button>' +
+			.after('<button class="ui-websearch ui-state-default ' + o.tooltipClass + '"><span class="ui-icon ui-icon-websearch"></span></button>' +
+			       '<button class="ui-state-default ui-corner-right ' + o.tooltipClass + '"><span class="ui-icon ui-icon-websearch-popup ui-icon-triangle-1-s"></span></button>' +
 			       '<div class="ui-websearch-popup ui-widget ui-widget-content ui-helper-clearfix ui-corner-all ui-helper-hidden-accessible"></div>')
-			.bind('mouseup', function(){ self._popup(false); });
+			.bind('mouseup focusout', function(){ self._popup(false); });
 
 		wsWrap = this.element.closest('.ui-widget');
 		wsPopup = wsWrap.find('.ui-websearch-popup').hide();
@@ -52,23 +53,17 @@
 
 		// setup websearch button & position popup
 		wsButton
-			.button({ icons: { primary : null } })
-			.removeClass('ui-corner-all')
-			.bind(menuClick, function(event){
-				if (wsPopup.is(':visible')) { wsPopup.fadeOut('slow'); return; }
-				if (o.clicktoSearch && event.which == 1) { self._search(); return; }
-				var popupWidth = wsPopup.width() || 400,
-					popupHeight = wsPopup.height(),
-					buttonHeight = self.element.outerHeight(),
-					buttonLocation = wsButton.position(),
-					popupPositionX = ( buttonLocation.left + popupWidth < $(window).width() - 50 ) ? buttonLocation.left : $(window).width() - popupWidth - 50,
-					popupPositionY = ( buttonLocation.top - popupHeight < $(window).scrollTop() ) ? buttonLocation.top +  buttonHeight : buttonLocation.top - popupHeight;
-				wsPopup.css({ left : popupPositionX, top: popupPositionY, width : popupWidth }).fadeIn('slow');
+			.button({ text: false, icons: { primary : null } })
+			.removeClass('ui-corner-all ui-button')
+			.bind('click', function(event){
+				if ( $(this).is('.ui-websearch') ) { self._search(); return false; }
+				self._popup(true);
 				return false;
 			})
-			.bind('keyup', function(event){
-				if (event.which == 38 || event.which == 40) { self._popup(true); } // up/down arrow to open
-				if (event.which == 27) { self._popup(false); } // escape to close
+			.filter(':eq(1)')
+			.add(wsPopup).bind('keyup focusin', function(event){
+				if (event.type == 'focusin') { self._popup(true); } // focus on button to open popup
+				if (event.which == 27) { self._popup(false); }      // escape to close
 			});
 
 		// Build popup contents
@@ -84,59 +79,81 @@
 		if (o.sortList) { popupContent.sort(); }
 		wsPopup
 			.html(popupContent.join(' ') || 'No Search Engines Set')
-			.find('.site')
+			.find('.site') // links in the popup
+			// select site
 			.click(function(){
 				self._setSearchSite($(this).attr('data-name'));
 				self._popup(false);
 				return false;
 			})
-			.hover(function(){ $(this).toggleClass('ui-state-highlight'); });
+			// highlight site list
+			.hover(function(){ $(this).toggleClass('ui-state-highlight'); })
+			// add up/down arrow to site list
+			.keyup(function(event){
+				if (event.which == 40) { $(this).next().focus(); }
+				if (event.which == 38) { $(this).prev().focus(); }
+			});
 
-		// initiate search by pressing enter
+		// initiate search by pressing enter or clicking on search button
 		this.element.keyup(function(event){
 			if (event.which !== 13) { return; }
 			self._search();
 		});
+		wsButton.find('.ui-icon-websearch').bind('click',function(){ self._search(); return false;});
 
+		// popup positioning constants
+		popupWidth = wsPopup.width();
+		popupHeight = wsPopup.outerHeight();
+		buttonHeight = wsWrap.outerHeight();
+	
 		// hide widget
 		if (o.hidden) { wsWrap.hide(); }
 	},
 
 	// show (true) or hide (false) the site popup
 	_popup : function(show) {
+		if (show && wsPopup.is(':visible')) { return; }
 		if (!show) { wsPopup.fadeOut('slow'); return; }
-		var popupWidth = wsPopup.width() || 400,
-			buttonLocation = wsButton.position().left,
-			popupPosition = ( buttonLocation + popupWidth < $(window).width() - 50 ) ? buttonLocation : $(window).width() - popupWidth - 50;
-		wsPopup.css({ left : popupPosition, width : popupWidth }).fadeIn('slow');
+		var buttonLocation = wsButton.position(),
+			popupPositionX = ( buttonLocation.left + popupWidth < $(window).width() - 50 ) ? buttonLocation.left : $(window).width() - popupWidth - 50, // 50 = extra padding
+			popupPositionY = ( buttonLocation.top - popupHeight < $(window).scrollTop() ) ? buttonLocation.top + buttonHeight : buttonLocation.top - popupHeight;
+		wsPopup.css({ left : popupPositionX, top: popupPositionY, width : popupWidth }).fadeIn('slow');
 	},
 
 	// update icons and text of selected site
 	_setSearchSite : function(name){
-		if (typeof name === 'undefined' || name === '' || !this.options.websearch.hasOwnProperty(name)) { return; }
-		var o = this.options, site = this.options.websearch[name];
+		if (typeof name === 'undefined' || name === '' || !o.websearch.hasOwnProperty(name)) { return wsButton.attr('title'); } // return current
+		var site = o.websearch[name];
 		this.element
 			.attr('data-search-string', site[1] || '')
-			.next().attr('title', name + ': ' + ((o.clicktoSearch) ? o.clickMessage[0] : o.clickMessage[1] || '') ) // include tips
-			.find('span.ui-icon').attr('class','ui-icon ui-icon-websearch ' + site[0] || ''); // update button icon
-		this.element.trigger( 'change', name );
+			.next().attr('title', name ) // Add site name to title for tooltips
+			.find('.ui-icon-websearch').attr('class', 'ui-icon ui-icon-websearch ' + site[0] || ''); // update button icon
+		this.element.trigger('change', name);
 		return name;
 	},
 
-	_search : function(){
-		var query = escape(this.element.val()),
+	// Internal search function
+	_search : function(q, tar, opt){
+		var query = escape(q || this.element.val()),
 			siteString = this.element.attr('data-search-string').replace(/\{s\}/g, query);
 		if (siteString === '' || query === '') { return; }
-		if (this.options.openNewWindow) {
-			window.open(siteString, '_newtab'); // new tab for firefox (prevents popup blocker message)
+		if (o.searchResult) {
+			o.searchResult.call(this.element, siteString);
 		} else {
-			document.location.href = siteString;
+			window.open(siteString, tar || o.windowTarget, opt || o.windowOptions);
 		}
 	},
 
+	// get/set currently selected search site
 	current: function(name) {
-		return (typeof name === 'undefined' || name === '') ? wsButton.attr('title').split(':')[0] : this._setSearchSite(name);
+		return (typeof name === 'undefined' || name === '') ? wsButton.attr('title') : this._setSearchSite(name);
 	},
+
+	// initiate a search from external to the script
+	search: function(query, target, options) {
+		this._search(query, target, options);
+	},
+
 	destroy: function() {
 		this.element
 			.removeClass('ui-websearch-input ui-widget-content ui-corner-left')
@@ -145,6 +162,7 @@
 		this.element.unwrap();
 		$.Widget.prototype.destroy.apply(this, arguments); // default destroy
 	}
- });
+
+});
 
 })( jQuery );
