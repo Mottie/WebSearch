@@ -1,0 +1,141 @@
+/*** Websearch ***/
+
+/* Change colors here */
+/* input */
+.websearch input {
+	color: #ffffff;
+	border: #666666 1px solid;
+	background: #000000 url(../images/bg-input.png) repeat-x 50% bottom;
+}
+/* both buttons */
+.websearch button {
+	color: #eeeeee;
+	border: #666666 1px solid;
+	background: #555555 url(../images/bg-button.png) repeat-x 50% 50%;
+}
+.websearch button:hover, .websearch button:focus {
+	border-color: #59b4d4;
+	background-color: #288db1;
+}
+.websearch button:active {
+	border-color: #ffaf0f;
+	background-color: #f58400;
+}
+/* Popup site selector */
+.websearch-popup {
+	color: #ffffff;
+	border: #666666 1px solid;
+	background: #000000 url(../images/bg-input.png) repeat-x 50% bottom;
+}
+.websearch-popup a.site {
+	color: #fff;
+}
+.websearch-popup a.site:hover, .websearch-popup a.site:focus {
+	color: #2e7db2;
+}
+
+/*** end custom colors ***/
+/* overall */
+.websearch, .websearch input, .websearch button, .websearch span {
+	font-family: Segoe UI,Arial,sans-serif;
+	font-size: 1.1em;
+	font-weight: normal;
+	margin: 0;
+	padding: 0;
+}
+.websearch {
+	font-size: 1em;
+}
+.websearch input {
+	border-radius: 6px 0 0 6px;
+	-moz-border-radius: 6px 0 0 6px;
+	-webkit-border-radius: 6px 0 0 6px;
+}
+
+/* buttons */
+.websearch button {
+	font-weight: bold;
+	margin: 0;
+	outline: 0;
+}
+button.websearch-search {
+	padding: 0 2px;
+}
+button.websearch-select {
+	width: 20px;
+}
+.websearch button.last {
+	border-radius: 0 6px 6px 0;
+	-moz-border-radius: 0 6px 6px 0;
+	-webkit-border-radius: 0 6px 6px 0;
+}
+/* button contents */
+.websearch span {
+	background: transparent url(../images/search.png) 20px 20px no-repeat;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	display: inline-block;
+	cursor: pointer;
+	white-space: nowrap;
+}
+/* search button & popup icons */
+.icon-websearch-search, .icon-websearch {
+	height: 20px;
+	width: 22px;
+}
+/* select button */
+.websearch .icon-websearch-select {
+	background-position: left -140px; /* black arrow @ left -160px;*/
+	height: 20px;
+	width: 16px;
+}
+
+/* selector popup */
+.websearch-popup {
+	width: 150px;
+	position: absolute;
+	font-size: 1em;
+	font-family: Segoe UI,Arial,sans-serif;
+	padding: 5px 20px;
+	text-align: left;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+/* popup styling, trying to use ui-state-default, but hiding the background & border; add color as needed */
+.websearch-popup .site {
+	white-space: nowrap;
+	display: block;
+	cursor: pointer;
+	text-decoration: none;
+	text-align: left;
+	background-color: transparent;
+	background-image: url();
+	border-color: transparent;
+}
+.websearch-popup .site span {
+	display: inline-block;
+	margin-right: 5px;
+}
+/* popup styling, hovering add ui-state-highlight */
+.websearch-popup .site:hover {
+	font-weight: normal;
+}
+
+/* site icons */
+.websearch .ui-icon-altavista     { background-position: left top; }
+.websearch .ui-icon-amazon        { background-position: right top; }
+.websearch .ui-icon-ask           { background-position: left -20px; }
+.websearch .ui-icon-bing          { background-position: right -20px; }
+.websearch .ui-icon-dictionary    { background-position: left -40px; }
+.websearch .ui-icon-dogpile       { background-position: right -40px; }
+.websearch .ui-icon-duckduckgo    { background-position: left -60px; }
+.websearch .ui-icon-google        { background-position: right -60px; }
+.websearch .ui-icon-lycos         { background-position: left -80px; }
+.websearch .ui-icon-stackoverflow { background-position: right -80px; }
+.websearch .ui-icon-yahoo         { background-position: left -100px; }
+.websearch .ui-icon-webcrawler    { background-position: right -100px; }
+.websearch .ui-icon-wikipedia     { background-position: left -120px; }
+.websearch .ui-icon-wolfram       { background-position: right -120px; }
